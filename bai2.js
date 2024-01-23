@@ -1,27 +1,20 @@
-function convertText() {
-    const inputText = document.getElementById('inputText').value;
-    const lines = inputText.split('\n');
-  
-    const output = lines.map(line => {
-      const words = line.split('_');
-      const camelCaseWords = words.map((word, index) => {
-        return index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1);
-      });
-      return camelCaseWords.join('');
+btnTransfer.addEventListener('click', function (e) {
+    e.preventDefault();
+    const amount = Number(inputTransferAmount.value);
+    const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+    );
+    inputTransferAmount.value = inputTransferTo.value = '';
+    if (
+    amount > 0 &&
+    receiverAcc &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.username !== currentAccount.username
+    ) {
+    // Doing the transfer
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+    // Update UI
+    updateUI(currentAccount);
+    }
     });
-  
-    displayOutput(output);
-  }
-  
-  function displayOutput(output) {
-    const outputDiv = document.getElementById('output');
-    outputDiv.innerbai2 = '';
-  
-    output.forEach((result, index) => {
-      const tickMarks = '✅'.repeat(index + 1);
-      const resultLine = document.createElement('div');
-      resultLine.textContent = `${result} ${tickMarks}`;
-      outputDiv.appendChild(resultLine);
-    });
-  }
-  

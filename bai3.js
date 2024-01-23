@@ -1,15 +1,49 @@
-// String Methods Practice
-const flights = '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
-// � Delayed Departure from FAO to TXL (11h25)
-// Arrival from BRU to FAO (11h45)
-// � Delayed Arrival from HEL to FAO (12h05)
-// Departure from FAO to LIS (12h30)
-const getCode = str => str.slice(0, 3).toUpperCase();
-for (const flight of flights.split('+')) {
- const [type, from, to, time] = flight.split(';');
- const output = `${type.startsWith('_Delayed') ? '�' : ''}${type.replaceAll(
- '_',
- ' '
- )} ${getCode(from)} ${getCode(to)} (${time.replace(':', 'h')})`.padStart(36);
- console.log(output);
-}
+//1.
+const bankDepositSum = accounts
+.flatMap(acc => acc.movements)
+.filter(mov => mov > 0)
+.reduce((sum, cur) => sum + cur, 0);
+
+
+console.log(bankDepositSum);
+// 2.
+// const numDeposits1000 = accounts
+// .flatMap(acc => acc.movements)
+// .filter(mov => mov >= 1000).length;
+const numDeposits1000 = accounts
+.flatMap(acc => acc.movements)
+.reduce((count, cur) => (cur >= 1000 ? ++count : count), 0);
+console.log(numDeposits1000);
+// Prefixed ++ oeprator
+let a = 10;
+console.log(++a);
+console.log(a);
+// 3.
+const { deposits, withdrawals } = accounts
+.flatMap(acc => acc.movements)
+.reduce(
+(sums, cur) => {
+// cur > 0 ? (sums.deposits += cur) : (sums.withdrawals += cur);
+sums[cur > 0 ? 'deposits' : 'withdrawals'] += cur;
+return sums;
+},
+{ deposits: 0, withdrawals: 0 }
+);
+console.log(deposits, withdrawals);
+// 4.
+// this is a nice title -> This Is a Nice Title
+const convertTitleCase = function (title) {
+const capitzalize = str => str[0].toUpperCase() + str.slice(1);
+const exceptions = ['a', 'an', 'and', 'the', 'but', 'or', 'on', 'in',
+'with'];
+const titleCase = title
+.toLowerCase()
+
+.split(' ')
+.map(word => (exceptions.includes(word) ? word : capitzalize(word)))
+.join(' ');
+return capitzalize(titleCase);
+};
+console.log(convertTitleCase('this is a nice title'));
+console.log(convertTitleCase('this is a LONG title but not too long'));
+console.log(convertTitleCase('and here is another title with an EXAMPLE'));
